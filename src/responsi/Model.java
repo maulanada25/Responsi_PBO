@@ -46,11 +46,11 @@ public class Model {
             String query = "SELECT * FROM movie"; 
             ResultSet resultSet = state.executeQuery(query);
             while (resultSet.next()){
-                data[totData][0] = resultSet.getString("judul"); //harus sesuai nama kolom di mysql
-                data[totData][1] = String.valueOf(resultSet.getDouble("alur"));                
-                data[totData][2] = String.valueOf(resultSet.getDouble("penokohan"));
-                data[totData][3] = String.valueOf(resultSet.getDouble("akting"));
-                data[totData][4] = String.valueOf(resultSet.getDouble("nilai"));
+                data[totData][0] = resultSet.getString("title");
+                data[totData][1] = String.valueOf(resultSet.getDouble("plot"));                
+                data[totData][2] = String.valueOf(resultSet.getDouble("chara"));
+                data[totData][3] = String.valueOf(resultSet.getDouble("act"));
+                data[totData][4] = String.valueOf(resultSet.getDouble("score"));
                 totData++;
             }
             return data;
