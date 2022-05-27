@@ -20,20 +20,20 @@ public class Model {
     
     static final String JDBC_DRIVER = "com.mysql.cj.jdbcDriver";
     static final String DB_URL = "jdbc:mysql://localhost/movie_db";
-    static final String user = "root";
-    static final String pw = "";
+    static final String USER = "root";
+    static final String PASS = "";
     
-    Connection  conn;
-    Statement  state;
+    Connection conn;
+    Statement state;
     
     public Model(){
         try {
             Class.forName(JDBC_DRIVER);
-            conn = (Connection) DriverManager.getConnection(DB_URL, user,pw);
+            conn = (Connection) DriverManager.getConnection(DB_URL, USER, PASS);
             System.out.println("Success");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
-            System.out.println("Failed");
+            System.out.println("Failed bro");
         }
     }
     
@@ -48,8 +48,8 @@ public class Model {
             while (resultSet.next()){
                 data[totData][0] = resultSet.getString("title");
                 data[totData][1] = String.valueOf(resultSet.getDouble("plot"));                
-                data[totData][2] = String.valueOf(resultSet.getDouble("chara"));
-                data[totData][3] = String.valueOf(resultSet.getDouble("act"));
+                data[totData][2] = String.valueOf(resultSet.getDouble("character"));
+                data[totData][3] = String.valueOf(resultSet.getDouble("acting"));
                 data[totData][4] = String.valueOf(resultSet.getDouble("score"));
                 totData++;
             }
@@ -66,7 +66,7 @@ public class Model {
         int totData = 0;
 //        double score;
         try {
-           String query = "SELECT * FROM movie WHERE judul='" + title+"'"; 
+           String query = "SELECT * FROM movie WHERE title='" + title+"'"; 
            System.out.println(title + " " + plot + " " + chara + " " + act);
            ResultSet resultSet = state.executeQuery(query);
            
@@ -75,10 +75,10 @@ public class Model {
             }
 //            score = (plot+chara+act)/3;
             if (totData==0) {
-                query = "INSERT INTO movie(judul,alur,penokohan,akting,nilai) VALUES('"+title +"','"+plot+"','"+chara+"','"+act+"','"+score+"')";
+                query = "INSERT INTO movie(title,plot,character,acting,score) VALUES('"+title +"','"+plot+"','"+chara+"','"+act+"','"+score+"')";
            
                 state = (Statement) conn.createStatement();
-                state.executeUpdate(query); //execute querynya
+                state.executeUpdate(query);
                 System.out.println("Success");
                 JOptionPane.showMessageDialog(null, "Success");
             }
@@ -91,10 +91,10 @@ public class Model {
         }
     }
     
-    public void updateData(String title, double plot, double chara, double score){
+    public void updateData(String title, double plot, double chara, double act, double score){
         int totData=0;
         try {
-            String query = "SELECT * FROM movie WHERE judul='" + title +"'"; 
+            String query = "SELECT * FROM movie WHERE title='" + title +"'"; 
            ResultSet resultSet = state.executeQuery(query);
            
            while (resultSet.next()){ 
@@ -102,14 +102,14 @@ public class Model {
             }
            
              if (totData==1) {
-                query = "UPDATE movie SET alur='" + plot + "', penokohan='" + chara + "', nilai='"+ score+"' WHERE judul='" + title+"'"; 
+                query = "UPDATE movie SET plot='" + plot + "', character='" + chara + "', score='"+ score+"' WHERE title='" + title+"'"; 
                 state = (Statement) conn.createStatement();
                 state.executeUpdate(query); //execute querynya
-                System.out.println("Berhasil diupdate");
-                JOptionPane.showMessageDialog(null, "Data Berhasil diupdate");
+                System.out.println("Success");
+                JOptionPane.showMessageDialog(null, "Data Updated");
              }
              else {
-                 JOptionPane.showMessageDialog(null, "Data Tidak Ada");
+                 JOptionPane.showMessageDialog(null, "Data does not exist");
              }
             
         } catch (Exception e) {
@@ -120,10 +120,10 @@ public class Model {
     
     public void deleteData(String title){
         try{
-            String query = "DELETE FROM movie WHERE judul = '"+title+"'";
+            String query = "DELETE FROM movie WHERE title = '"+title+"'";
             state = conn.createStatement();
             state.executeUpdate(query);
-            JOptionPane.showMessageDialog(null, "Berhasil Dihapus");
+            JOptionPane.showMessageDialog(null, "Deleted");
             
         }catch(Exception e) {
             System.out.println(e.getMessage());
@@ -146,8 +146,5 @@ public class Model {
             return 0;
         }
     }
-    
-    
 
-    
 }
